@@ -1,0 +1,505 @@
+[
+  {
+    "product_id": "P001",
+    "name": "Men's Casual Shirt",
+    "category": "Shirts",
+    "price": 799,
+    "discount": 10,
+    "stock": 50,
+    "description": "Comfortable casual shirt for daily wear",
+    "image_url": "https://example.com/images/shirt1.jpg"
+  },
+  {
+    "product_id": "P002",
+    "name": "Men's Formal Shirt",
+    "category": "Shirts",
+    "price": 1299,
+    "discount": 15,
+    "stock": 40,
+    "description": "Perfect for office and formal events",
+    "image_url": "https://example.com/images/shirt2.jpg"
+  },
+  {
+    "product_id": "P003",
+    "name": "Men's Checked Shirt",
+    "category": "Shirts",
+    "price": 899,
+    "discount": 5,
+    "stock": 60,
+    "description": "Stylish checked pattern shirt",
+    "image_url": "https://example.com/images/shirt3.jpg"
+  },
+  {
+    "product_id": "P004",
+    "name": "Men's Linen Shirt",
+    "category": "Shirts",
+    "price": 1499,
+    "discount": 20,
+    "stock": 30,
+    "description": "Breathable linen shirt for summers",
+    "image_url": "https://example.com/images/shirt4.jpg"
+  },
+  {
+    "product_id": "P005",
+    "name": "Men's Denim Shirt",
+    "category": "Shirts",
+    "price": 1399,
+    "discount": 10,
+    "stock": 45,
+    "description": "Classic denim shirt",
+    "image_url": "https://example.com/images/shirt5.jpg"
+  },
+  {
+    "product_id": "P006",
+    "name": "Men's Cotton T-Shirt",
+    "category": "T-Shirts",
+    "price": 499,
+    "discount": 5,
+    "stock": 120,
+    "description": "Comfortable cotton T-Shirt",
+    "image_url": "https://example.com/images/tshirt1.jpg"
+  },
+  {
+    "product_id": "P007",
+    "name": "Men's V-Neck T-Shirt",
+    "category": "T-Shirts",
+    "price": 549,
+    "discount": 0,
+    "stock": 80,
+    "description": "Casual V-neck T-Shirt",
+    "image_url": "https://example.com/images/tshirt2.jpg"
+  },
+  {
+    "product_id": "P008",
+    "name": "Men's Polo T-Shirt",
+    "category": "T-Shirts",
+    "price": 699,
+    "discount": 10,
+    "stock": 90,
+    "description": "Smart polo T-Shirt for casual wear",
+    "image_url": "https://example.com/images/tshirt3.jpg"
+  },
+  {
+    "product_id": "P009",
+    "name": "Graphic Print T-Shirt",
+    "category": "T-Shirts",
+    "price": 599,
+    "discount": 5,
+    "stock": 100,
+    "description": "Stylish graphic print T-Shirt",
+    "image_url": "https://example.com/images/tshirt4.jpg"
+  },
+  {
+    "product_id": "P010",
+    "name": "Striped T-Shirt",
+    "category": "T-Shirts",
+    "price": 649,
+    "discount": 15,
+    "stock": 70,
+    "description": "Classic striped T-Shirt",
+    "image_url": "https://example.com/images/tshirt5.jpg"
+  },
+  {
+    "product_id": "P011",
+    "name": "Men's Slim Fit Jeans",
+    "category": "Pants",
+    "price": 1299,
+    "discount": 15,
+    "stock": 30,
+    "description": "Slim fit denim jeans",
+    "image_url": "https://example.com/images/jeans1.jpg"
+  },
+  {
+    "product_id": "P012",
+    "name": "Men's Chinos",
+    "category": "Pants",
+    "price": 1099,
+    "discount": 10,
+    "stock": 50,
+    "description": "Casual chinos for daily wear",
+    "image_url": "https://example.com/images/chinos1.jpg"
+  },
+  {
+    "product_id": "P013",
+    "name": "Men's Formal Trousers",
+    "category": "Pants",
+    "price": 1599,
+    "discount": 20,
+    "stock": 25,
+    "description": "Formal trousers for office",
+    "image_url": "https://example.com/images/trousers1.jpg"
+  },
+  {
+    "product_id": "P014",
+    "name": "Cargo Pants",
+    "category": "Pants",
+    "price": 1199,
+    "discount": 5,
+    "stock": 40,
+    "description": "Comfortable cargo pants",
+    "image_url": "https://example.com/images/cargo1.jpg"
+  },
+  {
+    "product_id": "P015",
+    "name": "Track Pants",
+    "category": "Pants",
+    "price": 999,
+    "discount": 0,
+    "stock": 60,
+    "description": "Casual track pants for sports",
+    "image_url": "https://example.com/images/track1.jpg"
+  },
+  {
+    "product_id": "P016",
+    "name": "Sports Shoes",
+    "category": "Shoes",
+    "price": 2499,
+    "discount": 20,
+    "stock": 40,
+    "description": "Comfortable running shoes",
+    "image_url": "https://example.com/images/shoes1.jpg"
+  },
+  {
+    "product_id": "P017",
+    "name": "Casual Sneakers",
+    "category": "Shoes",
+    "price": 2199,
+    "discount": 10,
+    "stock": 50,
+    "description": "Everyday casual sneakers",
+    "image_url": "https://example.com/images/shoes2.jpg"
+  },
+  {
+    "product_id": "P018",
+    "name": "Formal Leather Shoes",
+    "category": "Shoes",
+    "price": 3499,
+    "discount": 15,
+    "stock": 35,
+    "description": "Elegant formal shoes",
+    "image_url": "https://example.com/images/shoes3.jpg"
+  },
+  {
+    "product_id": "P019",
+    "name": "Loafers",
+    "category": "Shoes",
+    "price": 2999,
+    "discount": 5,
+    "stock": 45,
+    "description": "Stylish loafers for casual/formal",
+    "image_url": "https://example.com/images/shoes4.jpg"
+  },
+  {
+    "product_id": "P020",
+    "name": "Running Shoes",
+    "category": "Shoes",
+    "price": 2599,
+    "discount": 10,
+    "stock": 30,
+    "description": "Lightweight running shoes",
+    "image_url": "https://example.com/images/shoes5.jpg"
+  },
+  {
+    "product_id": "P021",
+    "name": "Leather Belt",
+    "category": "Accessories",
+    "price": 599,
+    "discount": 0,
+    "stock": 80,
+    "description": "Genuine leather belt",
+    "image_url": "https://example.com/images/belt1.jpg"
+  },
+  {
+    "product_id": "P022",
+    "name": "Wrist Watch",
+    "category": "Accessories",
+    "price": 1999,
+    "discount": 10,
+    "stock": 25,
+    "description": "Stylish wrist watch",
+    "image_url": "https://example.com/images/watch1.jpg"
+  },
+  {
+    "product_id": "P023",
+    "name": "Sunglasses",
+    "category": "Accessories",
+    "price": 899,
+    "discount": 5,
+    "stock": 60,
+    "description": "UV protection sunglasses",
+    "image_url": "https://example.com/images/sunglasses1.jpg"
+  },
+  {
+    "product_id": "P024",
+    "name": "Wallet",
+    "category": "Accessories",
+    "price": 699,
+    "discount": 0,
+    "stock": 50,
+    "description": "Leather wallet",
+    "image_url": "https://example.com/images/wallet1.jpg"
+  },
+  {
+    "product_id": "P025",
+    "name": "Cap",
+    "category": "Accessories",
+    "price": 399,
+    "discount": 0,
+    "stock": 70,
+    "description": "Casual cotton cap",
+    "image_url": "https://example.com/images/cap1.jpg"
+  },
+  {
+    "product_id": "P026",
+    "name": "Hooded Sweatshirt",
+    "category": "Shirts",
+    "price": 1299,
+    "discount": 15,
+    "stock": 40,
+    "description": "Warm hooded sweatshirt",
+    "image_url": "https://example.com/images/hoodie1.jpg"
+  },
+  {
+    "product_id": "P027",
+    "name": "Denim Jacket",
+    "category": "Shirts",
+    "price": 1999,
+    "discount": 20,
+    "stock": 30,
+    "description": "Stylish denim jacket",
+    "image_url": "https://example.com/images/jacket1.jpg"
+  },
+  {
+    "product_id": "P028",
+    "name": "Bomber Jacket",
+    "category": "Shirts",
+    "price": 2199,
+    "discount": 10,
+    "stock": 20,
+    "description": "Trendy bomber jacket",
+    "image_url": "https://example.com/images/bomber1.jpg"
+  },
+  {
+    "product_id": "P029",
+    "name": "Sweater",
+    "category": "Shirts",
+    "price": 1499,
+    "discount": 5,
+    "stock": 35,
+    "description": "Woolen sweater",
+    "image_url": "https://example.com/images/sweater1.jpg"
+  },
+  {
+    "product_id": "P030",
+    "name": "Cardigan",
+    "category": "Shirts",
+    "price": 1399,
+    "discount": 0,
+    "stock": 25,
+    "description": "Casual cardigan",
+    "image_url": "https://example.com/images/cardigan1.jpg"
+  },
+  {
+    "product_id": "P031",
+    "name": "Graphic Hoodie",
+    "category": "T-Shirts",
+    "price": 999,
+    "discount": 10,
+    "stock": 50,
+    "description": "Casual graphic hoodie",
+    "image_url": "https://example.com/images/hoodie2.jpg"
+  },
+  {
+    "product_id": "P032",
+    "name": "Striped Polo T-Shirt",
+    "category": "T-Shirts",
+    "price": 799,
+    "discount": 5,
+    "stock": 70,
+    "description": "Striped casual polo T-Shirt",
+    "image_url": "https://example.com/images/tshirt6.jpg"
+  },
+  {
+    "product_id": "P033",
+    "name": "V-Neck Sweatshirt",
+    "category": "T-Shirts",
+    "price": 1099,
+    "discount": 15,
+    "stock": 40,
+    "description": "Comfortable V-neck sweatshirt",
+    "image_url": "https://example.com/images/tshirt7.jpg"
+  },
+  {
+    "product_id": "P034",
+    "name": "Plain White T-Shirt",
+    "category": "T-Shirts",
+    "price": 499,
+    "discount": 0,
+    "stock": 100,
+    "description": "Basic plain white T-Shirt",
+    "image_url": "https://example.com/images/tshirt8.jpg"
+  },
+  {
+    "product_id": "P035",
+    "name": "Striped Hoodie",
+    "category": "T-Shirts",
+    "price": 1299,
+    "discount": 20,
+    "stock": 30,
+    "description": "Trendy striped hoodie",
+    "image_url": "https://example.com/images/tshirt9.jpg"
+  },
+  {
+    "product_id": "P036",
+    "name": "Jogger Pants",
+    "category": "Pants",
+    "price": 999,
+    "discount": 5,
+    "stock": 50,
+    "description": "Comfortable jogger pants",
+    "image_url": "https://example.com/images/jogger1.jpg"
+  },
+  {
+    "product_id": "P037",
+    "name": "Slim Chinos",
+    "category": "Pants",
+    "price": 1199,
+    "discount": 10,
+    "stock": 35,
+    "description": "Slim fit chinos",
+    "image_url": "https://example.com/images/chinos2.jpg"
+  },
+  {
+    "product_id": "P038",
+    "name": "Straight Jeans",
+    "category": "Pants",
+    "price": 1299,
+    "discount": 15,
+    "stock": 40,
+    "description": "Classic straight jeans",
+    "image_url": "https://example.com/images/jeans2.jpg"
+  },
+  {
+    "product_id": "P039",
+    "name": "Cargo Joggers",
+    "category": "Pants",
+    "price": 1099,
+    "discount": 5,
+    "stock": 30,
+    "description": "Casual cargo joggers",
+    "image_url": "https://example.com/images/cargo2.jpg"
+  },
+  {
+    "product_id": "P040",
+    "name": "Formal Pants",
+    "category": "Pants",
+    "price": 1499,
+    "discount": 20,
+    "stock": 25,
+    "description": "Office formal pants",
+    "image_url": "https://example.com/images/trousers2.jpg"
+  },
+  {
+    "product_id": "P041",
+    "name": "Canvas Sneakers",
+    "category": "Shoes",
+    "price": 2199,
+    "discount": 10,
+    "stock": 45,
+    "description": "Casual canvas sneakers",
+    "image_url": "https://example.com/images/shoes6.jpg"
+  },
+  {
+    "product_id": "P042",
+    "name": "Slip-On Shoes",
+    "category": "Shoes",
+    "price": 1999,
+    "discount": 5,
+    "stock": 50,
+    "description": "Easy slip-on shoes",
+    "image_url": "https://example.com/images/shoes7.jpg"
+  },
+  {
+    "product_id": "P043",
+    "name": "Formal Brogues",
+    "category": "Shoes",
+    "price": 3499,
+    "discount": 15,
+    "stock": 20,
+    "description": "Classic formal brogues",
+    "image_url": "https://example.com/images/shoes8.jpg"
+  },
+  {
+    "product_id": "P044",
+    "name": "Trail Running Shoes",
+    "category": "Shoes",
+    "price": 2599,
+    "discount": 20,
+    "stock": 30,
+    "description": "Durable running shoes",
+    "image_url": "https://example.com/images/shoes9.jpg"
+  },
+  {
+    "product_id": "P045",
+    "name": "Flip Flops",
+    "category": "Shoes",
+    "price": 499,
+    "discount": 0,
+    "stock": 70,
+    "description": "Casual flip flops",
+    "image_url": "https://example.com/images/shoes10.jpg"
+  },
+  {
+    "product_id": "P046",
+    "name": "Beanie Cap",
+    "category": "Accessories",
+    "price": 299,
+    "discount": 0,
+    "stock": 80,
+    "description": "Warm beanie cap",
+    "image_url": "https://example.com/images/cap2.jpg"
+  },
+  {
+    "product_id": "P047",
+    "name": "Leather Strap Watch",
+    "category": "Accessories",
+    "price": 2499,
+    "discount": 15,
+    "stock": 25,
+    "description": "Elegant leather strap watch",
+    "image_url": "https://example.com/images/watch2.jpg"
+  },
+  {
+    "product_id": "P048",
+    "name": "Sling Wallet",
+    "category": "Accessories",
+    "price": 799,
+    "discount": 5,
+    "stock": 60,
+    "description": "Sling-style wallet",
+    "image_url": "https://example.com/images/wallet2.jpg"
+  },
+  {
+    "product_id": "P049",
+    "name": "Sports Cap",
+    "category": "Accessories",
+    "price": 399,
+    "discount": 0,
+    "stock": 70,
+    "description": "Casual sports cap",
+    "image_url": "https://example.com/images/cap3.jpg"
+  },
+  {
+    "product_id": "P050",
+    "name": "Aviator Sunglasses",
+    "category": "Accessories",
+    "price": 999,
+    "discount": 10,
+    "stock": 50,
+    "description": "Stylish aviator sunglasses",
+    "image_url": "https://example.com/images/sunglasses2.jpg"
+  }
+]
+
+  
+
