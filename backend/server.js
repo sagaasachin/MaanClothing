@@ -13,10 +13,15 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://maan-clothing-8co2fyoik-sachins-projects-b753743d.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 
