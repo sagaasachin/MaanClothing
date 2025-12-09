@@ -1,13 +1,16 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth"; // change if backend URL differs
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // example: https://maanclothing-1.onrender.com/api
+  withCredentials: true,
+});
 
 export const loginUser = async (credentials) => {
-  const response = await axios.post(`${API_URL}/login`, credentials);
+  const response = await API.post("/auth/login", credentials);
   return response.data;
 };
 
 export const registerUser = async (data) => {
-  const response = await axios.post(`${API_URL}/register`, data);
+  const response = await API.post("/auth/register", data);
   return response.data;
 };
