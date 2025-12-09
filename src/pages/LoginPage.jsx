@@ -21,6 +21,8 @@ const LoginPage = () => {
   const { saveUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL; // ✅ Updated
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,7 +33,7 @@ const LoginPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -47,18 +49,16 @@ const LoginPage = () => {
         return;
       }
 
-      // ✅ Save user and token
+      // ✅ Save user & token
       saveUser(data.user, data.token);
       localStorage.setItem("token", data.token);
 
-      // ✅ Show success toast
       toast.success("Login successful!", {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 1500,
       });
 
-      // ✅ Redirect to homepage after login
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Try again!", {

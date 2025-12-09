@@ -24,6 +24,8 @@ const RegisterPage = () => {
   const { saveUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL; // ✅ Updated API base URL
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,7 +42,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -54,9 +56,13 @@ const RegisterPage = () => {
         return;
       }
 
+      // ✅ Save user & token
       saveUser(data.user, data.token);
+      localStorage.setItem("token", data.token);
+
       toast.success("Account created successfully!");
-      navigate("/");
+
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Try again!");
@@ -98,6 +104,7 @@ const RegisterPage = () => {
               onChange={(e) => setName(e.target.value)}
               required
             />
+
             <TextField
               label="Email"
               variant="outlined"
@@ -108,6 +115,7 @@ const RegisterPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <TextField
               label="Password"
               variant="outlined"
@@ -118,6 +126,7 @@ const RegisterPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
             <TextField
               label="Confirm Password"
               variant="outlined"
