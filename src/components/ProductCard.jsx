@@ -26,7 +26,7 @@ import { AuthContext } from "../context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_BASE = import.meta.env.VITE_API_URL; // ✅ Only this added
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const ProductCardPage = () => {
   const [products, setProducts] = useState([]);
@@ -45,24 +45,24 @@ const ProductCardPage = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ GET PRODUCTS
+  // Fetch products
   useEffect(() => {
     axios
-      .get(`${API_BASE}/products`) // 🔥 UPDATED
+      .get(`${API_BASE}/products`)
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Failed to fetch products:", err));
   }, []);
 
-  // ✅ GET WISHLIST
+  // Fetch wishlist
   useEffect(() => {
     if (!token) return;
-
     axios
       .get(`${API_BASE}/user/wishlist`, {
-        // 🔥 UPDATED
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => setWishlistIds(res.data.products?.map((p) => p._id) || []))
+      .then((res) =>
+        setWishlistIds(res.data?.products?.map((p) => p._id) || [])
+      )
       .catch((err) => {
         console.error("Failed to fetch wishlist:", err);
         if (err.response?.status === 401) {
@@ -73,7 +73,7 @@ const ProductCardPage = () => {
       });
   }, [token, navigate]);
 
-  // ✅ TOGGLE WISHLIST
+  // Wishlist toggle
   const handleToggleWishlist = async (productId) => {
     if (!token) {
       toast.info("Please login to continue");
@@ -85,19 +85,16 @@ const ProductCardPage = () => {
     try {
       if (isFav) {
         await axios.delete(`${API_BASE}/user/wishlist/${productId}`, {
-          // 🔥 UPDATED
           headers: { Authorization: `Bearer ${token}` },
         });
-
         setWishlistIds((prev) => prev.filter((id) => id !== productId));
         toast.info("Removed from Wishlist");
       } else {
         await axios.post(
-          `${API_BASE}/user/wishlist`, // 🔥 UPDATED
+          `${API_BASE}/user/wishlist`,
           { productId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-
         setWishlistIds((prev) => [...prev, productId]);
         toast.success("Added to Wishlist");
       }
@@ -107,7 +104,7 @@ const ProductCardPage = () => {
     }
   };
 
-  // ✅ ADD TO CART
+  // Add to Cart
   const handleAddToCart = async (productId) => {
     if (!token) {
       toast.info("Please login to continue");
@@ -116,22 +113,16 @@ const ProductCardPage = () => {
 
     try {
       await axios.post(
-        `${API_BASE}/user/cart`, // 🔥 UPDATED
+        `${API_BASE}/user/cart`,
         { productId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       toast.success("Added to Cart");
     } catch (err) {
       console.error("Failed to add to Cart:", err);
       toast.error("Failed to add to Cart");
     }
   };
-
-  // (Your UI remains exactly the same below)
-  // ---------------------------------------------------------------
-  // Nothing changed in UI part
-  // ---------------------------------------------------------------
 
   const allCategories = [...new Set(products.map((p) => p.category))];
 
@@ -159,14 +150,26 @@ const ProductCardPage = () => {
 
   return (
     <Box sx={{ px: { xs: 1, sm: 4 }, py: 6, bgcolor: "#f4f4f4" }}>
-      {/* Toast */}
       <ToastContainer
         position="top-center"
-        autoClose={2000}
-        style={toastStyles}
+        autoClose={1500}
+        toastStyle={{
+          width:
+            windowWidth < 480
+              ? "160px" // 📱 Smaller toast for mobile
+              : windowWidth < 768
+              ? "220px"
+              : windowWidth >= 1200
+              ? "350px"
+              : "280px",
+
+          fontSize: windowWidth < 480 ? "10px" : "12px", // 🔥 Reduced text size
+          padding: windowWidth < 480 ? "6px" : "8px",
+          textAlign: "center",
+          borderRadius: "8px",
+        }}
       />
 
-      {/* Title */}
       <Typography
         variant="h4"
         textAlign="center"
@@ -181,7 +184,7 @@ const ProductCardPage = () => {
         🛍 Explore Our Products
       </Typography>
 
-      {/* Filter */}
+      {/* Category Filter */}
       <Box
         sx={{
           position: "sticky",
@@ -265,6 +268,7 @@ const ProductCardPage = () => {
                   "&:hover": { transform: "translateY(-6px)", boxShadow: 8 },
                 }}
               >
+                {/* Wishlist button */}
                 <Tooltip
                   title={isFav ? "Remove from Wishlist" : "Add to Wishlist"}
                 >
@@ -282,6 +286,7 @@ const ProductCardPage = () => {
                   </IconButton>
                 </Tooltip>
 
+                {/* Product Image */}
                 <Box
                   sx={{
                     width: "100%",
@@ -303,28 +308,52 @@ const ProductCardPage = () => {
                   />
                 </Box>
 
+                {/* Text */}
                 <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h6" fontWeight="bold">
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "12px", sm: "14px", md: "16px" } }}
+                  >
                     {product.name}
                   </Typography>
-                  <Typography variant="body1" color="green" fontWeight="bold">
+
+                  <Typography
+                    variant="body1"
+                    color="green"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "12px", sm: "14px", md: "15px" } }}
+                  >
                     ₹{product.price}
                   </Typography>
                 </CardContent>
 
+                {/* Add to Cart */}
                 <Button
                   onClick={() => handleAddToCart(product._id)}
                   variant="contained"
+                  fullWidth
                   sx={{
-                    m: 1,
-                    ml: { xs: 3, sm: 8, md: 8.5 },
+                    mx: "auto",
+                    mb: 1,
+                    mt: 0,
+                    width: { xs: "90%", sm: "85%", md: "80%" },
                     bgcolor: "#FFD700",
                     color: "#000",
                     fontWeight: "bold",
+                    fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                    display: "flex",
+                    justifyContent: "center",
                     "&:hover": { bgcolor: "#000", color: "#FFD700" },
                   }}
                 >
-                  <AddShoppingCartIcon sx={{ mr: 1 ,}} /> Add to Cart
+                  <AddShoppingCartIcon
+                    sx={{
+                      mr: 1,
+                      fontSize: { xs: "14px", sm: "16px", md: "18px" },
+                    }}
+                  />
+                  Add to Cart
                 </Button>
               </Card>
             </Grid>

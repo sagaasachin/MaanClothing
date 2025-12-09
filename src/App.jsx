@@ -38,7 +38,14 @@ function AppContent() {
       toast.warn(
         `Please login to ${
           action === "cart" ? "add items to cart" : "use wishlist"
-        }`
+        }`,
+        {
+          style: {
+            fontSize: "11px",
+            minWidth: "150px",
+            padding: "6px",
+          },
+        }
       );
       navigate("/login");
       return false;
@@ -50,10 +57,14 @@ function AppContent() {
     if (!requireLogin("cart")) return;
     setCart((prev) => {
       if (prev.find((item) => item._id === product._id)) {
-        toast.info("Item already in cart");
+        toast.info("Item already in cart", {
+          style: { fontSize: "11px", minWidth: "150px" },
+        });
         return prev;
       }
-      toast.success("Item added to cart!");
+      toast.success("Item added to cart!", {
+        style: { fontSize: "11px", minWidth: "150px" },
+      });
       return [...prev, product];
     });
   };
@@ -62,17 +73,23 @@ function AppContent() {
     if (!requireLogin("wishlist")) return;
     setWishlist((prev) => {
       if (prev.find((item) => item._id === product._id)) {
-        toast.info("Item already in wishlist");
+        toast.info("Item already in wishlist", {
+          style: { fontSize: "11px", minWidth: "150px" },
+        });
         return prev;
       }
-      toast.success("Item added to wishlist!");
+      toast.success("Item added to wishlist!", {
+        style: { fontSize: "11px", minWidth: "150px" },
+      });
       return [...prev, product];
     });
   };
 
   const handleRemoveFromWishlist = (product) => {
     setWishlist((prev) => prev.filter((item) => item._id !== product._id));
-    toast.info("Removed from wishlist");
+    toast.info("Removed from wishlist", {
+      style: { fontSize: "11px", minWidth: "150px" },
+    });
   };
 
   return (
@@ -82,7 +99,7 @@ function AppContent() {
         minHeight: "100vh",
         margin: 0,
         padding: 0,
-        overflowX: "hidden", // prevent horizontal scroll
+        overflowX: "hidden",
       }}
     >
       <NavbarPage cart={cart} wishlist={wishlist} user={user} />
@@ -117,13 +134,23 @@ function AppContent() {
       </Routes>
 
       <FooterPage />
-      <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* GLOBAL RESPONSIVE SMALL TOAST */}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        toastStyle={{
+          fontSize: "11px",
+          minWidth: "150px",
+          padding: "6px 8px",
+          textAlign: "center",
+        }}
+      />
     </div>
   );
 }
 
 export default function App() {
-  // Remove default body margins
   useEffect(() => {
     document.body.style.margin = "0";
     document.body.style.padding = "0";

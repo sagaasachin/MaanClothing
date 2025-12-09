@@ -23,14 +23,13 @@ import { AuthContext } from "../context/AuthContext";
 const WishlistPage = () => {
   const { user } = useContext(AuthContext);
 
-  const API = import.meta.env.VITE_API_URL; // ✅ BASE API
+  const API = import.meta.env.VITE_API_URL;
 
   const [wishlist, setWishlist] = useState([]);
   const [internalAction, setInternalAction] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  // Load wishlist on mount
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -62,23 +61,28 @@ const WishlistPage = () => {
       });
 
       setWishlist((prev) => prev.filter((item) => item._id !== productId));
-
       localStorage.setItem("refreshNavbar", Date.now());
 
       if (internalAction) {
         toast.info("💛 Removed from Wishlist", {
           position: "top-center",
-          fontSize: isMobile ? "12px" : "14px",
+          style: {
+            fontSize: isMobile ? "10px" : "12px",
+            minWidth: isMobile ? "140px" : "180px",
+            padding: "6px",
+          },
         });
       }
       setInternalAction(false);
     } catch (err) {
       console.error("❌ Failed to remove:", err);
-
       if (internalAction) {
         toast.error("❌ Could not remove", {
           position: "top-center",
-          fontSize: isMobile ? "12px" : "14px",
+          style: {
+            fontSize: isMobile ? "10px" : "12px",
+            minWidth: isMobile ? "140px" : "180px",
+          },
         });
       }
       setInternalAction(false);
@@ -89,9 +93,11 @@ const WishlistPage = () => {
   const addToCart = async (productId) => {
     try {
       if (!user) {
-        toast.warn("Please login to add to cart", { position: "top-center" });
-        navigate("/login");
-        return;
+        toast.warn("Please login to add to cart", {
+          position: "top-center",
+          style: { fontSize: "11px", minWidth: "160px" },
+        });
+        return navigate("/login");
       }
 
       const token = localStorage.getItem("token");
@@ -106,13 +112,19 @@ const WishlistPage = () => {
 
       toast.success("🛒 Added to cart", {
         position: "top-center",
-        fontSize: isMobile ? "12px" : "14px",
+        style: {
+          fontSize: isMobile ? "10px" : "12px",
+          minWidth: isMobile ? "140px" : "180px",
+        },
       });
     } catch (err) {
       console.error("❌ Cart error:", err);
       toast.error("❌ Failed to add to cart", {
         position: "top-center",
-        fontSize: isMobile ? "12px" : "14px",
+        style: {
+          fontSize: isMobile ? "10px" : "12px",
+          minWidth: isMobile ? "140px" : "180px",
+        },
       });
     }
   };
@@ -125,7 +137,16 @@ const WishlistPage = () => {
         minHeight: "100vh",
       }}
     >
-      <ToastContainer autoClose={1500} position="top-center" />
+      {/* Small responsive toast container */}
+      <ToastContainer
+        autoClose={1500}
+        position="top-center"
+        toastStyle={{
+          minWidth: "150px",
+          fontSize: "11px",
+          padding: "6px",
+        }}
+      />
 
       {/* Back Button */}
       <Typography
@@ -187,7 +208,6 @@ const WishlistPage = () => {
                   "&:hover": { transform: "translateY(-5px)", boxShadow: 8 },
                 }}
               >
-                {/* Remove */}
                 <Tooltip title="Remove from Wishlist">
                   <IconButton
                     onClick={() => {
@@ -258,6 +278,7 @@ const WishlistPage = () => {
                     width: "85%",
                     mx: "auto",
                     mb: 2,
+                    ml:3,
                     py: { xs: 0.75, sm: 1 },
                     fontSize: { xs: "11px", sm: "13px", md: "14px" },
                     bgcolor: "#FFD700",
