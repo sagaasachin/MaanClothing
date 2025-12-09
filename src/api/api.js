@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL, // Example: https://your-backend.onrender.com/api
+  withCredentials: true,
 });
 
 // ===============================
-// 🛍️ PRODUCTS (Publicly Visible)
+// 🛍️ PRODUCTS (Public)
 // ===============================
 export const fetchProducts = async (category = "", search = "") => {
   try {
@@ -20,7 +21,7 @@ export const fetchProducts = async (category = "", search = "") => {
 };
 
 // ===============================
-// 👤 AUTHENTICATION
+// 👤 AUTH
 // ===============================
 export const registerUser = async (userData) => {
   try {
@@ -49,41 +50,20 @@ export const fetchUserProfile = async (token) => {
     });
     return data;
   } catch (error) {
-    console.error("Profile fetch error:", error.response?.data || error.message);
+    console.error(
+      "Profile fetch error:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
-// ===============================
-// ❤️ CART & WISHLIST (Protected)
-// ===============================
-// These routes will be activated later once you add backend support.
-export const fetchCart = async (userId) => {
-  console.warn("Cart API not implemented yet");
-  return [];
-};
+// PLACEHOLDER CART/WISHLIST API
+export const fetchCart = async () => [];
+export const addToCart = async () => {};
+export const removeFromCart = async () => {};
+export const fetchWishlist = async () => [];
+export const addToWishlist = async () => {};
+export const removeFromWishlist = async () => {};
 
-export const addToCart = async (userId, productId) => {
-  console.warn("Add to cart API not implemented yet");
-  return;
-};
-
-export const removeFromCart = async (userId, productId) => {
-  console.warn("Remove from cart API not implemented yet");
-  return;
-};
-
-export const fetchWishlist = async (userId) => {
-  console.warn("Wishlist API not implemented yet");
-  return [];
-};
-
-export const addToWishlist = async (userId, productId) => {
-  console.warn("Add to wishlist API not implemented yet");
-  return;
-};
-
-export const removeFromWishlist = async (userId, productId) => {
-  console.warn("Remove from wishlist API not implemented yet");
-  return;
-};
+export default API;
