@@ -15,14 +15,19 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
+
+// ✅ Use shared API (gets baseURL from VITE_API_URL)
+import API from "../api/api";
+
 import logo from "../assets/logo.png";
 
 const NavbarPage = () => {
@@ -31,14 +36,16 @@ const NavbarPage = () => {
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleProfileClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  // 🔥 Fetch Wishlist + Cart Counts
+  // 🔥 Fetch Wishlist + Cart Counts using backend URL from .env
   const fetchCounts = async () => {
     const token = localStorage.getItem("token");
+
     if (!token || !user) {
       setCartCount(0);
       setWishlistCount(0);
@@ -47,10 +54,10 @@ const NavbarPage = () => {
 
     try {
       const [cartRes, wishRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/user/cart", {
+        API.get("/user/cart", {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get("http://localhost:5000/api/user/wishlist", {
+        API.get("/user/wishlist", {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -62,12 +69,11 @@ const NavbarPage = () => {
     }
   };
 
-  // Load counts when user logs in/out
   useEffect(() => {
     fetchCounts();
   }, [user]);
 
-  // 🔥 Real-time Navbar Refresh Listener
+  // 🔥 Real-time Navbar refresh using localStorage event
   useEffect(() => {
     const handleStorage = (event) => {
       if (event.key === "refreshNavbar") {
@@ -76,13 +82,9 @@ const NavbarPage = () => {
     };
 
     window.addEventListener("storage", handleStorage);
-
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-    };
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  // Drawer toggle
   const toggleDrawer = (open) => () => setDrawerOpen(open);
 
   return (
@@ -91,12 +93,7 @@ const NavbarPage = () => {
         position="sticky"
         sx={{ backgroundColor: "#0d0d0d", boxShadow: 3, px: { xs: 1, sm: 2 } }}
       >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* Logo */}
           <Box
             sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
@@ -150,7 +147,7 @@ const NavbarPage = () => {
             </IconButton>
           </Box>
 
-          {/* Mobile Menu Icon */}
+          {/* Mobile Hamburger */}
           <IconButton
             sx={{ display: { xs: "flex", md: "none" }, color: "#fff" }}
             onClick={toggleDrawer(true)}
@@ -171,9 +168,7 @@ const NavbarPage = () => {
                   <Typography variant="subtitle2">{user.name}</Typography>
                 </MenuItem>
                 <MenuItem disabled>
-                  <Typography variant="body2" color="text.secondary">
-                    {user.email}
-                  </Typography>
+                  <Typography variant="body2">{user.email}</Typography>
                 </MenuItem>
 
                 <Divider sx={{ my: 1 }} />
@@ -218,10 +213,9 @@ const NavbarPage = () => {
         </Toolbar>
       </AppBar>
 
-      {/* MOBILE DRAWER */}
+      {/* Mobile Drawer */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250, p: 2 }}>
-          {/* Close Button */}
           <Box display="flex" justifyContent="flex-end">
             <IconButton onClick={toggleDrawer(false)}>
               <CloseIcon />
@@ -230,7 +224,6 @@ const NavbarPage = () => {
 
           <Divider sx={{ my: 1 }} />
 
-          {/* Drawer Menu */}
           <List>
             <ListItem button onClick={() => navigate("/wishlist")}>
               <Badge badgeContent={wishlistCount} color="error" sx={{ mr: 2 }}>

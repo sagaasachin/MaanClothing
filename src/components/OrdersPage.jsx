@@ -1,8 +1,9 @@
 // frontend/src/components/OrdersPage.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import API from "../api/api"; // ✅ Use global API instance
+
 import {
   Box,
   Typography,
@@ -28,10 +29,11 @@ const OrdersPage = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get(
-          "http://localhost:5000/api/user/orders/my-orders",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        // 🔥 Updated URL — backend from env
+        const res = await API.get("/user/orders/my-orders", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
         setOrders(res.data.orders);
       } catch (err) {
         console.error("❌ Error fetching orders:", err.message);
@@ -67,14 +69,14 @@ const OrdersPage = () => {
         }}
         onClick={() => navigate("/")}
       >
-        &larr; Back to Home
+        ← Back to Home
       </Button>
 
       {/* Page Heading */}
       <Typography
         variant={isMobile ? "h5" : "h4"}
         gutterBottom
-        sx={{ color: "#000000ff", fontWeight: "bold" }}
+        sx={{ color: "#000", fontWeight: "bold" }}
       >
         My Orders
       </Typography>
@@ -126,12 +128,13 @@ const OrdersPage = () => {
 
                   <Typography
                     sx={{
-                      color: "#000000ff",
+                      color: "#000",
                       fontSize: isMobile ? "0.85rem" : "0.95rem",
                     }}
                   >
                     Total: ₹{order.totalAmount}
                   </Typography>
+
                   <Typography
                     sx={{
                       color: "#000",
@@ -140,6 +143,7 @@ const OrdersPage = () => {
                   >
                     Payment: {order.paymentType}
                   </Typography>
+
                   <Typography
                     sx={{
                       color: "#000",
@@ -149,6 +153,7 @@ const OrdersPage = () => {
                   >
                     Address: {order.address}
                   </Typography>
+
                   <Typography
                     sx={{
                       color: "#000",
@@ -160,7 +165,7 @@ const OrdersPage = () => {
                   </Typography>
                 </CardContent>
 
-                <Divider sx={{ my: 1, borderColor: "#000000ff" }} />
+                <Divider sx={{ my: 1 }} />
 
                 {/* Products List */}
                 <CardContent
@@ -177,6 +182,7 @@ const OrdersPage = () => {
                   >
                     Products
                   </Typography>
+
                   <Stack spacing={1}>
                     {order.products.map((p) => (
                       <Box key={p.product}>
@@ -189,9 +195,10 @@ const OrdersPage = () => {
                         >
                           {p.name}
                         </Typography>
+
                         <Typography
                           sx={{
-                            color: "#000000ff",
+                            color: "#000",
                             fontSize: isMobile ? "0.75rem" : "0.85rem",
                           }}
                         >
