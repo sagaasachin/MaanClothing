@@ -1,29 +1,33 @@
 // App.jsx
-import React, { useState, useContext, useEffect } from "react";
+import React, { lazy, Suspense, useContext, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
-import NavbarPage from "./components/NavbarPage";
-import LandingPage from "./components/LandingPage";
-import ProductCardPage from "./components/ProductCard";
-import WishlistPage from "./components/WishlistPage";
-import CartPage from "./components/CartPage";
-import OrdersPage from "./components/OrdersPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ProfilePage from "./components/ProfilePage";
-import FooterPage from "./components/FooterPage";
+// 🚀 LAZY LOAD ALL BIG COMPONENTS (Boosts speed)
+const NavbarPage = lazy(() => import("./components/NavbarPage"));
+const LandingPage = lazy(() => import("./components/LandingPage"));
+const ProductCardPage = lazy(() => import("./components/ProductCard"));
+const WishlistPage = lazy(() => import("./components/WishlistPage"));
+const CartPage = lazy(() => import("./components/CartPage"));
+const OrdersPage = lazy(() => import("./components/OrdersPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const ProfilePage = lazy(() => import("./components/ProfilePage"));
+const FooterPage = lazy(() => import("./components/FooterPage"));
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// ------------------------
+// MAIN CONTENT
+// ------------------------
 function AppContent() {
-  const [cart, setCart] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ✅ Auto-redirect after login
   useEffect(() => {
     const redirectPath = localStorage.getItem("redirectAfterLogin");
     if (user && redirectPath) {
@@ -32,6 +36,7 @@ function AppContent() {
     }
   }, [user, navigate]);
 
+  // Protect pages
   const requireLogin = (action) => {
     if (!user) {
       localStorage.setItem("redirectAfterLogin", location.pathname);
@@ -53,103 +58,67 @@ function AppContent() {
     return true;
   };
 
-  const handleAddToCart = (product) => {
-    if (!requireLogin("cart")) return;
-    setCart((prev) => {
-      if (prev.find((item) => item._id === product._id)) {
-        toast.info("Item already in cart", {
-          style: { fontSize: "11px", minWidth: "150px" },
-        });
-        return prev;
-      }
-      toast.success("Item added to cart!", {
-        style: { fontSize: "11px", minWidth: "150px" },
-      });
-      return [...prev, product];
-    });
-  };
-
-  const handleAddToWishlist = (product) => {
-    if (!requireLogin("wishlist")) return;
-    setWishlist((prev) => {
-      if (prev.find((item) => item._id === product._id)) {
-        toast.info("Item already in wishlist", {
-          style: { fontSize: "11px", minWidth: "150px" },
-        });
-        return prev;
-      }
-      toast.success("Item added to wishlist!", {
-        style: { fontSize: "11px", minWidth: "150px" },
-      });
-      return [...prev, product];
-    });
-  };
-
-  const handleRemoveFromWishlist = (product) => {
-    setWishlist((prev) => prev.filter((item) => item._id !== product._id));
-    toast.info("Removed from wishlist", {
-      style: { fontSize: "11px", minWidth: "150px" },
-    });
-  };
-
   return (
-    <div
-      style={{
-        width: "100%",
-        minHeight: "100vh",
-        margin: 0,
-        padding: 0,
-        overflowX: "hidden",
-      }}
-    >
-      <NavbarPage cart={cart} wishlist={wishlist} user={user} />
+    <>
+      {/* Lazy Suspense Wrapper */}
+      <Suspense
+        fallback={
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              marginTop: "60px",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Loading...
+          </div>
+        }
+      >
+        <NavbarPage user={user} />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <LandingPage />
-              <ProductCardPage
-                onAddToCart={handleAddToCart}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </>
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
-            <WishlistPage
-              wishlist={wishlist}
-              onRemoveFromWishlist={handleRemoveFromWishlist}
-            />
-          }
-        />
-        <Route path="/cart" element={<CartPage cart={cart} />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <LandingPage />
+                <ProductCardPage />
+              </>
+            }
+          />
 
-      <FooterPage />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
 
-      {/* GLOBAL RESPONSIVE SMALL TOAST */}
+        <FooterPage />
+      </Suspense>
+
+      {/* Global Toast (Responsive Small Size) */}
       <ToastContainer
         position="top-center"
         autoClose={2000}
+        limit={2}
         toastStyle={{
           fontSize: "11px",
+          padding: "6px 10px",
           minWidth: "150px",
-          padding: "6px 8px",
           textAlign: "center",
         }}
       />
-    </div>
+    </>
   );
 }
 
+// ------------------------
+// EXPORT WRAPPED WITH AUTH PROVIDER
+// ------------------------
 export default function App() {
   useEffect(() => {
     document.body.style.margin = "0";
