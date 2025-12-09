@@ -22,12 +22,15 @@ import { AuthContext } from "../context/AuthContext";
 
 const WishlistPage = () => {
   const { user } = useContext(AuthContext);
+
+  const API = import.meta.env.VITE_API_URL; // ✅ BASE API
+
   const [wishlist, setWishlist] = useState([]);
-  const [internalAction, setInternalAction] = useState(false); // ⭐ Prevent double toast
+  const [internalAction, setInternalAction] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  // Load wishlist
+  // Load wishlist on mount
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -36,7 +39,7 @@ const WishlistPage = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:5000/api/user/wishlist", {
+        const res = await axios.get(`${API}/user/wishlist`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -47,35 +50,31 @@ const WishlistPage = () => {
     };
 
     fetchWishlist();
-  }, []);
+  }, [API]);
 
-  // ⭐ Remove From Wishlist — NO duplicate toast
+  // ⭐ Remove From Wishlist
   const removeFromWishlist = async (productId) => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(
-        `http://localhost:5000/api/user/wishlist/${productId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.delete(`${API}/user/wishlist/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setWishlist((prev) => prev.filter((item) => item._id !== productId));
 
-      // 🔥 Real-time Navbar update
       localStorage.setItem("refreshNavbar", Date.now());
 
-      // ⭐ Show toast ONLY if triggered inside this page
       if (internalAction) {
         toast.info("💛 Removed from Wishlist", {
           position: "top-center",
           fontSize: isMobile ? "12px" : "14px",
         });
       }
-
-      // Reset flag
       setInternalAction(false);
     } catch (err) {
       console.error("❌ Failed to remove:", err);
+
       if (internalAction) {
         toast.error("❌ Could not remove", {
           position: "top-center",
@@ -98,12 +97,11 @@ const WishlistPage = () => {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `http://localhost:5000/api/user/cart`,
+        `${API}/user/cart`,
         { productId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // 🔥 Real-time Navbar update
       localStorage.setItem("refreshNavbar", Date.now());
 
       toast.success("🛒 Added to cart", {
@@ -144,7 +142,6 @@ const WishlistPage = () => {
         ← Back to Home
       </Typography>
 
-      {/* Page Title */}
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -190,11 +187,11 @@ const WishlistPage = () => {
                   "&:hover": { transform: "translateY(-5px)", boxShadow: 8 },
                 }}
               >
-                {/* ⭐ Remove Button */}
+                {/* Remove */}
                 <Tooltip title="Remove from Wishlist">
                   <IconButton
                     onClick={() => {
-                      setInternalAction(true); // ⭐ mark that user clicked in this page
+                      setInternalAction(true);
                       removeFromWishlist(item._id);
                     }}
                     sx={{
@@ -209,7 +206,6 @@ const WishlistPage = () => {
                   </IconButton>
                 </Tooltip>
 
-                {/* Product Image */}
                 <Box
                   sx={{
                     width: "100%",
@@ -231,14 +227,11 @@ const WishlistPage = () => {
                   />
                 </Box>
 
-                {/* Product Info */}
                 <CardContent sx={{ textAlign: "center", py: 1 }}>
                   <Typography
                     variant="h6"
                     fontWeight="bold"
-                    sx={{
-                      fontSize: { xs: "12px", sm: "14px", md: "15px" },
-                    }}
+                    sx={{ fontSize: { xs: "12px", sm: "14px", md: "15px" } }}
                   >
                     {item.name}
                   </Typography>
@@ -247,16 +240,12 @@ const WishlistPage = () => {
                     variant="body1"
                     color="green"
                     fontWeight="bold"
-                    sx={{
-                      mt: 0.5,
-                      fontSize: { xs: "11px", sm: "13px", md: "14px" },
-                    }}
+                    sx={{ fontSize: { xs: "11px", sm: "13px", md: "14px" } }}
                   >
                     ₹{item.price}
                   </Typography>
                 </CardContent>
 
-                {/* Add to Cart Button */}
                 <Button
                   variant="contained"
                   startIcon={
