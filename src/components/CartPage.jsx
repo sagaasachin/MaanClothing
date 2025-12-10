@@ -262,7 +262,6 @@ const CartPage = () => {
   // ---------------- UI ----------------
   return (
     <Box sx={{ p: 3, bgcolor: "#f5f7fa", minHeight: "100vh" }} ref={stepRef}>
-
       {/* Back Button */}
       <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: "black" }}>
@@ -344,31 +343,36 @@ const CartPage = () => {
                         {cartItems.map((item, i) => (
                           <Grid
                             item
+                            xs={6} // ⭐ 2 cards per row on mobile
+                            sm={4}
+                            md={3}
+                            lg={2.5}
                             key={item.product_id}
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            lg={3}
                             sx={{ display: "flex", justifyContent: "center" }}
                           >
                             <Card
                               sx={{
-                                width: "100%",
+                                width: { xs: 150, sm: 200, md: 240 },
                                 borderRadius: 3,
                                 boxShadow: 4,
-                                position: "relative",
                                 overflow: "hidden",
-                                transition: "all 0.25s ease-in-out",
-                                "&:hover": { transform: "translateY(-4px)" },
+                                position: "relative",
+                                transition: "0.3s",
+                                "&:hover": {
+                                  transform: "translateY(-5px)",
+                                  boxShadow: 8,
+                                },
                                 display: "flex",
                                 flexDirection: "column",
+                                justifyContent: "space-between",
                               }}
                             >
+                              {/* Product Image */}
                               <Box
                                 sx={{
                                   width: "100%",
-                                  height: { xs: 200, sm: 220, md: 180 },
-                                  position: "relative",
+                                  height: { xs: 120, sm: 150, md: 170 },
+                                  overflow: "hidden",
                                 }}
                               >
                                 <CardMedia
@@ -379,31 +383,24 @@ const CartPage = () => {
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "cover",
+                                    transition: "0.4s",
+                                    "&:hover": { transform: "scale(1.08)" },
                                   }}
                                 />
-                                {item.discount > 0 && (
-                                  <Chip
-                                    label={`${item.discount}% OFF`}
-                                    size="small"
-                                    sx={{
-                                      position: "absolute",
-                                      top: 8,
-                                      left: 8,
-                                      bgcolor: "rgba(255,215,0,0.95)",
-                                      color: "black",
-                                      fontWeight: "bold",
-                                    }}
-                                  />
-                                )}
                               </Box>
 
-                              <CardContent
-                                sx={{ textAlign: "left", flexGrow: 1 }}
-                              >
+                              {/* Product Info */}
+                              <CardContent sx={{ textAlign: "center", py: 1 }}>
                                 <Typography
-                                  variant="subtitle1"
-                                  fontWeight="700"
-                                  sx={{ fontSize: { xs: 14, sm: 15 } }}
+                                  variant="h6"
+                                  fontWeight="bold"
+                                  sx={{
+                                    fontSize: {
+                                      xs: "11px",
+                                      sm: "13px",
+                                      md: "14px",
+                                    },
+                                  }}
                                 >
                                   {item.name}
                                 </Typography>
@@ -411,99 +408,95 @@ const CartPage = () => {
                                 <Box
                                   sx={{
                                     display: "flex",
-                                    alignItems: "center",
+                                    justifyContent: "center",
                                     gap: 1,
-                                    mt: 1,
                                   }}
                                 >
-                                  <Typography variant="h6" fontWeight="bold">
+                                  <Typography
+                                    variant="body1"
+                                    fontWeight="bold"
+                                    sx={{
+                                      fontSize: { xs: "11px", sm: "13px" },
+                                      color: "green",
+                                    }}
+                                  >
                                     ₹{priceAfterDiscount(item).toFixed(2)}
                                   </Typography>
+
                                   {item.discount > 0 && (
                                     <Typography
-                                      variant="body2"
+                                      variant="caption"
                                       sx={{
                                         textDecoration: "line-through",
-                                        color: "gray",
+                                        color: "#777",
+                                        fontSize: { xs: "10px", sm: "12px" },
                                       }}
                                     >
-                                      ₹{Number(item.price).toFixed(2)}
+                                      ₹{item.price}
                                     </Typography>
                                   )}
                                 </Box>
 
+                                {/* ⭐ Stock Display */}
                                 <Typography
                                   variant="body2"
-                                  color="text.secondary"
-                                  sx={{ mt: 0.5 }}
+                                  sx={{
+                                    mt: 0.5,
+                                    color: item.stock > 0 ? "blue" : "red",
+                                    fontSize: { xs: "10px", sm: "12px" },
+                                  }}
                                 >
                                   Stock: {item.stock}
                                 </Typography>
-
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    mt: 1,
-                                  }}
-                                >
-                                  <Tooltip title="Decrease">
-                                    <span>
-                                      <IconButton
-                                        onClick={() => decreaseQty(i)}
-                                        disabled={
-                                          item.quantity <= 1 ||
-                                          savingQtyFor === item.product_id
-                                        }
-                                      >
-                                        <RemoveIcon />
-                                      </IconButton>
-                                    </span>
-                                  </Tooltip>
-
-                                  <Typography sx={{ mx: 1 }}>
-                                    {item.quantity}
-                                  </Typography>
-
-                                  <Tooltip title="Increase">
-                                    <span>
-                                      <IconButton
-                                        onClick={() => increaseQty(i)}
-                                        disabled={
-                                          item.quantity >= item.stock ||
-                                          savingQtyFor === item.product_id
-                                        }
-                                      >
-                                        <AddIcon />
-                                      </IconButton>
-                                    </span>
-                                  </Tooltip>
-
-                                  {savingQtyFor === item.product_id && (
-                                    <CircularProgress
-                                      size={20}
-                                      sx={{ ml: 1 }}
-                                    />
-                                  )}
-                                </Box>
                               </CardContent>
 
-                              <CardActions
-                                sx={{ justifyContent: "center", p: 2 }}
+                              {/* Quantity Controls */}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: 1,
+                                  mb: 1,
+                                }}
                               >
-                                <Button
-                                  variant="contained"
-                                  startIcon={<DeleteIcon />}
-                                  color="error"
-                                  onClick={() => removeItem(item.product_id)}
-                                  disabled={removingFor === item.product_id}
-                                  sx={{ width: "90%" }}
+                                <IconButton
+                                  size="small"
+                                  onClick={() => decreaseQty(i)}
+                                  disabled={item.quantity <= 1}
                                 >
-                                  {removingFor === item.product_id
-                                    ? "Removing..."
-                                    : "Remove"}
-                                </Button>
-                              </CardActions>
+                                  <RemoveIcon fontSize="small" />
+                                </IconButton>
+
+                                <Typography sx={{ fontSize: 14 }}>
+                                  {item.quantity}
+                                </Typography>
+
+                                <IconButton
+                                  size="small"
+                                  onClick={() => increaseQty(i)}
+                                  disabled={item.quantity >= item.stock}
+                                >
+                                  <AddIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+
+                              {/* ⭐ Centered Delete Button */}
+                              <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => removeItem(item.product_id)}
+                                sx={{
+                                  width: "80%",
+                                  alignSelf: "center",
+                                  mb: 2,
+                                  textTransform: "none",
+                                  fontSize: { xs: "10px", sm: "12px" },
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Remove
+                              </Button>
                             </Card>
                           </Grid>
                         ))}
