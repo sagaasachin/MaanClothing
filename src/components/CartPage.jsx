@@ -32,7 +32,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
 import "react-toastify/dist/ReactToastify.css";
@@ -262,7 +262,6 @@ const CartPage = () => {
   // ---------------- UI ----------------
   return (
     <Box sx={{ p: 3, bgcolor: "#f5f7fa", minHeight: "100vh" }} ref={stepRef}>
-      <ToastContainer position="top-center" autoClose={1500} />
 
       {/* Back Button */}
       <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>

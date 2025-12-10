@@ -4,7 +4,7 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
-// 🚀 LAZY LOAD ALL BIG COMPONENTS (Boosts speed)
+// 🚀 Lazy Loading for Better Performance
 const NavbarPage = lazy(() => import("./components/NavbarPage"));
 const LandingPage = lazy(() => import("./components/LandingPage"));
 const ProductCardPage = lazy(() => import("./components/ProductCard"));
@@ -16,18 +16,23 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const ProfilePage = lazy(() => import("./components/ProfilePage"));
 const FooterPage = lazy(() => import("./components/FooterPage"));
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// ------------------------
-// MAIN CONTENT
-// ------------------------
+// -------------------------------------------------------------------------
+// MAIN APP CONTENT
+// -------------------------------------------------------------------------
 function AppContent() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Auto-redirect after login
+  // ⭐ Always Scroll to Top When Route Changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  // ⭐ Redirect Back After Login
   useEffect(() => {
     const redirectPath = localStorage.getItem("redirectAfterLogin");
     if (user && redirectPath) {
@@ -36,31 +41,9 @@ function AppContent() {
     }
   }, [user, navigate]);
 
-  // Protect pages
-  const requireLogin = (action) => {
-    if (!user) {
-      localStorage.setItem("redirectAfterLogin", location.pathname);
-      toast.warn(
-        `Please login to ${
-          action === "cart" ? "add items to cart" : "use wishlist"
-        }`,
-        {
-          style: {
-            fontSize: "11px",
-            minWidth: "150px",
-            padding: "6px",
-          },
-        }
-      );
-      navigate("/login");
-      return false;
-    }
-    return true;
-  };
-
   return (
     <>
-      {/* Lazy Suspense Wrapper */}
+      {/* Suspense Loader */}
       <Suspense
         fallback={
           <div
@@ -76,8 +59,10 @@ function AppContent() {
           </div>
         }
       >
-        <NavbarPage user={user} />
+        {/* Navigation */}
+        <NavbarPage />
 
+        {/* App Routes */}
         <Routes>
           <Route
             path="/"
@@ -97,28 +82,45 @@ function AppContent() {
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
 
+        {/* Footer */}
         <FooterPage />
       </Suspense>
 
-      {/* Global Toast (Responsive Small Size) */}
+      {/* 🌟 Global Toast Notification (only one in entire app) */}
       <ToastContainer
         position="top-center"
         autoClose={2000}
         limit={2}
+        closeOnClick
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
         toastStyle={{
-          fontSize: "11px",
-          padding: "6px 10px",
-          minWidth: "150px",
+          width: "auto",
+          maxWidth:
+            window.innerWidth < 400
+              ? "220px"
+              : window.innerWidth < 768
+              ? "260px"
+              : "300px",
+          fontSize:
+            window.innerWidth < 400
+              ? "11px"
+              : window.innerWidth < 768
+              ? "12px"
+              : "13px",
+          padding: "8px 12px",
           textAlign: "center",
+          borderRadius: "6px",
         }}
       />
     </>
   );
 }
 
-// ------------------------
-// EXPORT WRAPPED WITH AUTH PROVIDER
-// ------------------------
+// -------------------------------------------------------------------------
+// EXPORT APP WITH AUTH PROVIDER
+// -------------------------------------------------------------------------
 export default function App() {
   useEffect(() => {
     document.body.style.margin = "0";

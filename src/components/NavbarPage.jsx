@@ -25,9 +25,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-// ✅ Use shared API (gets baseURL from VITE_API_URL)
 import API from "../api/api";
-
 import logo from "../assets/logo.png";
 
 const NavbarPage = () => {
@@ -42,7 +40,7 @@ const NavbarPage = () => {
   const handleProfileClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  // 🔥 Fetch Wishlist + Cart Counts using backend URL from .env
+  // Fetch Cart + Wishlist Counts
   const fetchCounts = async () => {
     const token = localStorage.getItem("token");
 
@@ -65,27 +63,26 @@ const NavbarPage = () => {
       setCartCount(cartRes.data.items?.length || 0);
       setWishlistCount(wishRes.data.products?.length || 0);
     } catch (err) {
-      console.error("❌ Error fetching counts:", err.message);
+      console.error("Navbar Count Error:", err.message);
     }
   };
 
+  // Refresh counts when login/logout
   useEffect(() => {
     fetchCounts();
   }, [user]);
 
-  // 🔥 Real-time Navbar refresh using localStorage event
+  // Listen for manual updates (product added to wishlist/cart)
   useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === "refreshNavbar") {
-        fetchCounts();
-      }
+    const handler = (e) => {
+      if (e.key === "refreshNavbar") fetchCounts();
     };
 
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
   }, []);
 
-  const toggleDrawer = (open) => () => setDrawerOpen(open);
+  const toggleDrawer = (state) => () => setDrawerOpen(state);
 
   return (
     <>
@@ -94,7 +91,7 @@ const NavbarPage = () => {
         sx={{ backgroundColor: "#0d0d0d", boxShadow: 3, px: { xs: 1, sm: 2 } }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Logo */}
+          {/* ⭐ LOGO ALWAYS VISIBLE (Removed Back Arrow Fully) */}
           <Box
             sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
             onClick={() => navigate("/")}
@@ -122,7 +119,7 @@ const NavbarPage = () => {
             </Typography>
           </Box>
 
-          {/* Desktop Icons */}
+          {/* DESKTOP ICONS */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
@@ -147,7 +144,7 @@ const NavbarPage = () => {
             </IconButton>
           </Box>
 
-          {/* Mobile Hamburger */}
+          {/* MOBILE MENU BUTTON */}
           <IconButton
             sx={{ display: { xs: "flex", md: "none" }, color: "#fff" }}
             onClick={toggleDrawer(true)}
@@ -155,7 +152,7 @@ const NavbarPage = () => {
             <MenuIcon />
           </IconButton>
 
-          {/* Profile Dropdown */}
+          {/* PROFILE DROPDOWN */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -167,6 +164,7 @@ const NavbarPage = () => {
                 <MenuItem disabled>
                   <Typography variant="subtitle2">{user.name}</Typography>
                 </MenuItem>
+
                 <MenuItem disabled>
                   <Typography variant="body2">{user.email}</Typography>
                 </MenuItem>
@@ -181,6 +179,7 @@ const NavbarPage = () => {
                 >
                   Profile
                 </MenuItem>
+
                 <MenuItem
                   onClick={() => {
                     navigate("/orders");
@@ -189,6 +188,7 @@ const NavbarPage = () => {
                 >
                   Orders
                 </MenuItem>
+
                 <MenuItem
                   onClick={() => {
                     logout();
@@ -213,7 +213,7 @@ const NavbarPage = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Drawer */}
+      {/* ⭐ MOBILE DRAWER MENU */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250, p: 2 }}>
           <Box display="flex" justifyContent="flex-end">
@@ -225,14 +225,26 @@ const NavbarPage = () => {
           <Divider sx={{ my: 1 }} />
 
           <List>
-            <ListItem button onClick={() => navigate("/wishlist")}>
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/wishlist");
+                setDrawerOpen(false);
+              }}
+            >
               <Badge badgeContent={wishlistCount} color="error" sx={{ mr: 2 }}>
                 <FavoriteIcon />
               </Badge>
               <ListItemText primary="Wishlist" />
             </ListItem>
 
-            <ListItem button onClick={() => navigate("/cart")}>
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/cart");
+                setDrawerOpen(false);
+              }}
+            >
               <Badge badgeContent={cartCount} color="error" sx={{ mr: 2 }}>
                 <ShoppingCartIcon />
               </Badge>
@@ -243,11 +255,23 @@ const NavbarPage = () => {
 
             {user ? (
               <>
-                <ListItem button onClick={() => navigate("/profile")}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    navigate("/profile");
+                    setDrawerOpen(false);
+                  }}
+                >
                   <ListItemText primary="Profile" />
                 </ListItem>
 
-                <ListItem button onClick={() => navigate("/orders")}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    navigate("/orders");
+                    setDrawerOpen(false);
+                  }}
+                >
                   <ListItemText primary="Orders" />
                 </ListItem>
 
@@ -256,13 +280,20 @@ const NavbarPage = () => {
                   onClick={() => {
                     logout();
                     navigate("/login");
+                    setDrawerOpen(false);
                   }}
                 >
                   <ListItemText primary="Logout" />
                 </ListItem>
               </>
             ) : (
-              <ListItem button onClick={() => navigate("/login")}>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate("/login");
+                  setDrawerOpen(false);
+                }}
+              >
                 <ListItemText primary="Login" />
               </ListItem>
             )}

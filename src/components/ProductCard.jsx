@@ -23,7 +23,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE = import.meta.env.VITE_API_URL;
@@ -150,25 +150,6 @@ const ProductCardPage = () => {
 
   return (
     <Box sx={{ px: { xs: 1, sm: 4 }, py: 6, bgcolor: "#f4f4f4" }}>
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        toastStyle={{
-          width:
-            windowWidth < 480
-              ? "160px" // 📱 Smaller toast for mobile
-              : windowWidth < 768
-              ? "220px"
-              : windowWidth >= 1200
-              ? "350px"
-              : "280px",
-
-          fontSize: windowWidth < 480 ? "10px" : "12px", // 🔥 Reduced text size
-          padding: windowWidth < 480 ? "6px" : "8px",
-          textAlign: "center",
-          borderRadius: "8px",
-        }}
-      />
 
       <Typography
         variant="h4"

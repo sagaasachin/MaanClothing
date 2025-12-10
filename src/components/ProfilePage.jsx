@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Paper,
 } from "@mui/material";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -114,7 +114,7 @@ const ProfilePage = () => {
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", mt: 5 }}>
-      <ToastContainer />
+      
       <Typography
         sx={{ cursor: "pointer", color: "#1976d2", mb: 2 }}
         onClick={() => navigate("/")}

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -137,16 +137,7 @@ const WishlistPage = () => {
         minHeight: "100vh",
       }}
     >
-      {/* Small responsive toast container */}
-      <ToastContainer
-        autoClose={1500}
-        position="top-center"
-        toastStyle={{
-          minWidth: "150px",
-          fontSize: "11px",
-          padding: "6px",
-        }}
-      />
+      
 
       {/* Back Button */}
       <Typography
