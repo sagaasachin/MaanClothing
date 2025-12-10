@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import API from "../api/api"; // ✅ Use global API instance
+import API from "../api/api"; // ✅ Uses global axios baseURL
 
 import {
   Box,
@@ -23,20 +23,20 @@ const OrdersPage = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  // ⭐ Fetch Orders
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-        // 🔥 Updated URL — backend from env
+      try {
         const res = await API.get("/user/orders/my-orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        setOrders(res.data.orders);
+        setOrders(res.data.orders || []);
       } catch (err) {
-        console.error("❌ Error fetching orders:", err.message);
+        console.error("❌ Error fetching orders:", err);
       }
     };
 
@@ -58,7 +58,7 @@ const OrdersPage = () => {
 
   return (
     <Box sx={{ p: { xs: 2, sm: 4 }, bgcolor: "#ffffff", minHeight: "100vh" }}>
-      {/* Back to Home */}
+      {/* Back Button */}
       <Button
         variant="text"
         sx={{
@@ -72,7 +72,6 @@ const OrdersPage = () => {
         ← Back to Home
       </Button>
 
-      {/* Page Heading */}
       <Typography
         variant={isMobile ? "h5" : "h4"}
         gutterBottom
@@ -97,14 +96,14 @@ const OrdersPage = () => {
                   height: "100%",
                   borderRadius: 3,
                   boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                  transition: "transform 0.3s",
+                  transition: "0.3s",
                   "&:hover": {
                     transform: "translateY(-4px)",
                     boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
                   },
                 }}
               >
-                {/* Order Summary */}
+                {/* Order Info */}
                 <CardContent sx={{ pb: 1 }}>
                   <Stack
                     direction="row"
@@ -112,73 +111,62 @@ const OrdersPage = () => {
                     alignItems="center"
                     mb={1}
                   >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{ color: "#000", fontWeight: "bold" }}
-                    >
+                    <Typography sx={{ fontWeight: "bold", color: "#000" }}>
                       Order ID: {order._id.slice(0, 8)}...
                     </Typography>
+
                     <Chip
                       label={order.status}
-                      color={getStatusColor(order.status)}
                       size="small"
-                      sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+                      color={getStatusColor(order.status)}
+                      sx={{
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                      }}
                     />
                   </Stack>
 
-                  <Typography
-                    sx={{
-                      color: "#000",
-                      fontSize: isMobile ? "0.85rem" : "0.95rem",
-                    }}
-                  >
+                  <Typography sx={{ color: "#000", fontSize: "0.9rem" }}>
                     Total: ₹{order.totalAmount}
                   </Typography>
 
-                  <Typography
-                    sx={{
-                      color: "#000",
-                      fontSize: isMobile ? "0.85rem" : "0.95rem",
-                    }}
-                  >
+                  <Typography sx={{ color: "#000", fontSize: "0.9rem" }}>
                     Payment: {order.paymentType}
                   </Typography>
 
                   <Typography
                     sx={{
                       color: "#000",
-                      fontSize: isMobile ? "0.85rem" : "0.95rem",
+                      fontSize: "0.85rem",
                     }}
                     noWrap
                   >
                     Address: {order.address}
                   </Typography>
 
-                  <Typography
-                    sx={{
-                      color: "#000",
-                      fontSize: isMobile ? "0.85rem" : "0.95rem",
-                    }}
-                  >
+                  <Typography sx={{ color: "#000", fontSize: "0.9rem" }}>
                     Delivery:{" "}
                     {new Date(order.expectedDelivery).toLocaleDateString()}
                   </Typography>
                 </CardContent>
 
-                <Divider sx={{ my: 1 }} />
+                <Divider />
 
-                {/* Products List */}
+                {/* Product List */}
                 <CardContent
                   sx={{
-                    pt: 1,
                     flexGrow: 1,
-                    overflowY: "auto",
                     maxHeight: isMobile ? 200 : 250,
+                    overflowY: "auto",
                   }}
                 >
                   <Typography
                     variant="subtitle2"
-                    sx={{ color: "#FFD700", mb: 1, fontWeight: "bold" }}
+                    sx={{
+                      color: "#FFD700",
+                      mb: 1,
+                      fontWeight: "bold",
+                    }}
                   >
                     Products
                   </Typography>
@@ -188,9 +176,9 @@ const OrdersPage = () => {
                       <Box key={p.product}>
                         <Typography
                           sx={{
-                            color: "#000",
                             fontWeight: "bold",
-                            fontSize: isMobile ? "0.85rem" : "0.95rem",
+                            color: "#000",
+                            fontSize: "0.9rem",
                           }}
                         >
                           {p.name}
@@ -198,8 +186,8 @@ const OrdersPage = () => {
 
                         <Typography
                           sx={{
+                            fontSize: "0.8rem",
                             color: "#000",
-                            fontSize: isMobile ? "0.75rem" : "0.85rem",
                           }}
                         >
                           {p.quantity} × ₹{p.price}
