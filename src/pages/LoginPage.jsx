@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -80,7 +80,6 @@ const LoginPage = () => {
         p: 2,
       }}
     >
-      <ToastContainer />
       <Card
         sx={{ maxWidth: 400, width: "100%", boxShadow: 3, borderRadius: 3 }}
       >
