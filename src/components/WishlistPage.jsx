@@ -137,8 +137,6 @@ const WishlistPage = () => {
         minHeight: "100vh",
       }}
     >
-      
-
       {/* Back Button */}
       <Typography
         variant="body1"
@@ -256,22 +254,22 @@ const WishlistPage = () => {
                     ₹{item.price}
                   </Typography>
                 </CardContent>
-
                 <Button
                   variant="contained"
                   startIcon={
                     <ShoppingCartIcon
-                      sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }}
+                      sx={{ fontSize: { xs: 14, sm: 18, md: 20 } }}
                     />
                   }
                   onClick={() => addToCart(item._id)}
                   sx={{
-                    width: "85%",
+                    width: { xs: "90%", sm: "85%" },
                     mx: "auto",
                     mb: 2,
-                    ml:3,
-                    py: { xs: 0.75, sm: 1 },
-                    fontSize: { xs: "11px", sm: "13px", md: "14px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    py: { xs: 0.6, sm: 0.9, md: 1.1 },
+                    fontSize: { xs: "10px", sm: "12px", md: "14px" },
                     bgcolor: "#FFD700",
                     color: "#000",
                     fontWeight: "bold",

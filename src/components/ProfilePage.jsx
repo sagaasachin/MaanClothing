@@ -218,6 +218,6 @@ const ProfilePage = () => {
     </Box>
   );
 };
-console.log("ENV BASE URL =", import.meta.env.VITE_API_URL);
+// console.log("ENV BASE URL =", import.meta.env.VITE_API_URL);
 
 export default ProfilePage;

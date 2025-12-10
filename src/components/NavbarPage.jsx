@@ -67,22 +67,25 @@ const NavbarPage = () => {
     }
   };
 
-  // Refresh counts when login/logout
   useEffect(() => {
     fetchCounts();
   }, [user]);
 
-  // Listen for manual updates (product added to wishlist/cart)
   useEffect(() => {
     const handler = (e) => {
       if (e.key === "refreshNavbar") fetchCounts();
     };
-
     window.addEventListener("storage", handler);
     return () => window.removeEventListener("storage", handler);
   }, []);
 
   const toggleDrawer = (state) => () => setDrawerOpen(state);
+
+  // ⭐ Ensures drawer closes BEFORE navigation
+  const navigateAndClose = (path) => {
+    setDrawerOpen(false);
+    setTimeout(() => navigate(path), 150); // delay ensures drawer animates out
+  };
 
   return (
     <>
@@ -91,7 +94,7 @@ const NavbarPage = () => {
         sx={{ backgroundColor: "#0d0d0d", boxShadow: 3, px: { xs: 1, sm: 2 } }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* ⭐ LOGO ALWAYS VISIBLE (Removed Back Arrow Fully) */}
+          {/* Logo */}
           <Box
             sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
             onClick={() => navigate("/")}
@@ -119,7 +122,7 @@ const NavbarPage = () => {
             </Typography>
           </Box>
 
-          {/* DESKTOP ICONS */}
+          {/* Desktop Icons */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
@@ -144,7 +147,7 @@ const NavbarPage = () => {
             </IconButton>
           </Box>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* Mobile Menu Button */}
           <IconButton
             sx={{ display: { xs: "flex", md: "none" }, color: "#fff" }}
             onClick={toggleDrawer(true)}
@@ -152,7 +155,7 @@ const NavbarPage = () => {
             <MenuIcon />
           </IconButton>
 
-          {/* PROFILE DROPDOWN */}
+          {/* Profile Dropdown */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -164,7 +167,6 @@ const NavbarPage = () => {
                 <MenuItem disabled>
                   <Typography variant="subtitle2">{user.name}</Typography>
                 </MenuItem>
-
                 <MenuItem disabled>
                   <Typography variant="body2">{user.email}</Typography>
                 </MenuItem>
@@ -213,7 +215,7 @@ const NavbarPage = () => {
         </Toolbar>
       </AppBar>
 
-      {/* ⭐ MOBILE DRAWER MENU */}
+      {/* ⭐ Mobile Drawer */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250, p: 2 }}>
           <Box display="flex" justifyContent="flex-end">
@@ -225,26 +227,14 @@ const NavbarPage = () => {
           <Divider sx={{ my: 1 }} />
 
           <List>
-            <ListItem
-              button
-              onClick={() => {
-                navigate("/wishlist");
-                setDrawerOpen(false);
-              }}
-            >
+            <ListItem button onClick={() => navigateAndClose("/wishlist")}>
               <Badge badgeContent={wishlistCount} color="error" sx={{ mr: 2 }}>
                 <FavoriteIcon />
               </Badge>
               <ListItemText primary="Wishlist" />
             </ListItem>
 
-            <ListItem
-              button
-              onClick={() => {
-                navigate("/cart");
-                setDrawerOpen(false);
-              }}
-            >
+            <ListItem button onClick={() => navigateAndClose("/cart")}>
               <Badge badgeContent={cartCount} color="error" sx={{ mr: 2 }}>
                 <ShoppingCartIcon />
               </Badge>
@@ -255,23 +245,11 @@ const NavbarPage = () => {
 
             {user ? (
               <>
-                <ListItem
-                  button
-                  onClick={() => {
-                    navigate("/profile");
-                    setDrawerOpen(false);
-                  }}
-                >
+                <ListItem button onClick={() => navigateAndClose("/profile")}>
                   <ListItemText primary="Profile" />
                 </ListItem>
 
-                <ListItem
-                  button
-                  onClick={() => {
-                    navigate("/orders");
-                    setDrawerOpen(false);
-                  }}
-                >
+                <ListItem button onClick={() => navigateAndClose("/orders")}>
                   <ListItemText primary="Orders" />
                 </ListItem>
 
@@ -279,21 +257,14 @@ const NavbarPage = () => {
                   button
                   onClick={() => {
                     logout();
-                    navigate("/login");
-                    setDrawerOpen(false);
+                    navigateAndClose("/login");
                   }}
                 >
                   <ListItemText primary="Logout" />
                 </ListItem>
               </>
             ) : (
-              <ListItem
-                button
-                onClick={() => {
-                  navigate("/login");
-                  setDrawerOpen(false);
-                }}
-              >
+              <ListItem button onClick={() => navigateAndClose("/login")}>
                 <ListItemText primary="Login" />
               </ListItem>
             )}
