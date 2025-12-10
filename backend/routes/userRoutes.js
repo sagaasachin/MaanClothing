@@ -14,7 +14,7 @@ const router = express.Router();
 ============================================ */
 
 // GET USER PROFILE
-router.get("/profile", protect, async (req, res) => {
+router.get("/api/user/profile", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -26,7 +26,7 @@ router.get("/profile", protect, async (req, res) => {
 });
 
 // UPDATE USER PROFILE
-router.put("/profile", protect, async (req, res) => {
+router.put("/api/user/profile", protect, async (req, res) => {
   try {
     const { name, phone, address, gender, dob } = req.body;
 
