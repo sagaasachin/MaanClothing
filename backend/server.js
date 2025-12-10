@@ -17,11 +17,13 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://maanclothing-2.onrender.com", // ⭐ Update with your final Render frontend URL
+      "https://maanclothing-2.onrender.com", // frontend
+      "https://maanclothing-1.onrender.com", // backend
     ],
     credentials: true,
   })
 );
+
 
 // Body parser
 app.use(express.json());
