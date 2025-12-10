@@ -150,7 +150,6 @@ const ProductCardPage = () => {
 
   return (
     <Box sx={{ px: { xs: 1, sm: 4 }, py: 6, bgcolor: "#f4f4f4" }}>
-
       <Typography
         variant="h4"
         textAlign="center"
@@ -166,17 +165,13 @@ const ProductCardPage = () => {
       </Typography>
 
       {/* Category Filter */}
+      {/* Category Filter (NOT sticky — scrolls normally) */}
       <Box
         sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backgroundColor: "white",
-          boxShadow: 3,
-          borderRadius: 2,
-          mb: 5,
+          mb: 3,
           px: { xs: 1, sm: 2 },
-          py: { xs: 1, sm: 2 },
+          py: 1,
+          backgroundColor: "transparent",
         }}
       >
         <FormGroup
@@ -184,7 +179,7 @@ const ProductCardPage = () => {
           sx={{
             justifyContent: "center",
             flexWrap: "wrap",
-            gap: { xs: 1, sm: 3, md: 5 },
+            gap: { xs: 1, sm: 3, md: 4 },
           }}
         >
           {allCategories.map((category) => (
@@ -195,8 +190,8 @@ const ProductCardPage = () => {
                   checked={selectedCategories.includes(category)}
                   onChange={() => handleCategoryChange(category)}
                   sx={{
-                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
                     "&.Mui-checked": { color: "#FFD700" },
+                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
                   }}
                 />
               }
@@ -207,7 +202,7 @@ const ProductCardPage = () => {
                     color: selectedCategories.includes(category)
                       ? "#000"
                       : "#555",
-                    fontSize: { xs: "11px", sm: "14px" },
+                    fontSize: { xs: "12px", sm: "14px" },
                   }}
                 >
                   {category}
