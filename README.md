@@ -1,7 +1,7 @@
 # 🛍️ MaanClothing – Full Stack E-Commerce Application
 
-MaanClothing is a MERN stack e-commerce web application for clothing retail.
-This project is originally created and maintained by **Saga Sachin** and has been cloned for learning, development, and enhancement purposes.
+MaanClothing is a full-stack MERN e-commerce web application designed for clothing retail.  
+The project focuses on backend–frontend integration, RESTful APIs, authentication, and scalable application structure.
 
 ---
 
